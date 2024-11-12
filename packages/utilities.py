@@ -258,7 +258,7 @@ def gradient_alpha_beta(par,d1,num_subnw,obs,method='linear'):
     #            0.5*np.matmul(obs.T,obs) -0.5*alpha*beta*np.matmul(phiT,phiT.T) + 1.5*np.matmul(mn,np.matmul(A,mn.T).T)/beta
     g_beta    =  0.5*num_obs/beta - np.matmul((obs-np.matmul(d1,mn)).T,(obs-np.matmul(d1,mn)))/2 - 0.5*np.trace(np.matmul(A_inv,np.matmul(d1.T,d1)))
     
-    if method is 'log':
+    if method == 'log':
         return np.array([alpha*g_alpha,beta*g_beta])/num_obs
     
     else:
@@ -301,7 +301,7 @@ def second_der_alpha_beta(par,d1,num_subnw,obs,method='linear'):
     g2_alpha_beta = -np.matmul((obs - np.matmul(d1,mn)).T,(np.matmul(d1,np.matmul(A_inv,mn)))) +\
                     0.5*np.trace(np.matmul(np.linalg.matrix_power(A_inv,2),np.matmul(d1.T,d1)))
     
-    if method is 'log':
+    if method == 'log':
         return np.array([alpha**2*g2_alpha,beta**2*g2_beta,alpha*beta*g2_alpha_beta])/num_obs #this is only valid at the point where first derivative is zero
     
     else:
@@ -394,7 +394,7 @@ def auc_roc(beta,beta_error,num_threshold,num_bdry=1,method='total',plot=False,t
             fp[i,j] += np.sum(t[num_bdry:])
             tn[i,j] += num_int - np.sum(t[num_bdry:]) 
 
-    if method is 'total':
+    if method == 'total':
         if plot:
             plt.figure()
             plt.scatter(np.sum(fp,0)/(np.sum(fp,0)+np.sum(tn,0)),np.sum(tp,0)/(np.sum(tp,0)+np.sum(fn,0)),marker='.')
@@ -405,7 +405,7 @@ def auc_roc(beta,beta_error,num_threshold,num_bdry=1,method='total',plot=False,t
         auc = np.trapz(y=np.sum(tp,0)/(np.sum(tp,0)+np.sum(fn,0)),x=np.sum(fp,0)/(np.sum(fp,0)+np.sum(tn,0)))
         return auc   
 
-    elif method is 'single':
+    elif method == 'single':
 
         if plot:
             plt.figure()
@@ -415,7 +415,7 @@ def auc_roc(beta,beta_error,num_threshold,num_bdry=1,method='total',plot=False,t
             plt.plot(np.mean(fp/(fp+tn),0),np.mean(fp/(fp+tn),0),'r--')
 
         for i in range(Num_reps):
-            auc[i] = np.trapz(y=tp[i]/(tp[i]+fn[i]),x=fp[i]/(fp[i]+tn[i]))
+            auc[i] = np.trapezoid(y=tp[i]/(tp[i]+fn[i]),x=fp[i]/(fp[i]+tn[i]))
 
         return np.mean(auc)
     

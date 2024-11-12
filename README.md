@@ -1,3 +1,5 @@
+[comment]: <> [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/snakemake/snakemake/main.yml?label=tests)](https://github.com/snakemake/snakemake/actions?query=branch%3Amain++)
+
 # **Net**work **boun**dary detection algorithm
 
 ## Physics-inspired machine learning detects “unknown unknowns” in networks: discovering network boundaries from observable dynamics
