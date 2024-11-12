@@ -1,4 +1,5 @@
-[comment]: <> [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/snakemake/snakemake/main.yml?label=tests)](https://github.com/snakemake/snakemake/actions?query=branch%3Amain++)
+![Execution testing]
+(https://github.com/btemoshir/netBound/blob/main/.github/workflows/test.yml/badge.svg?event=push)
 
 # **Net**work **boun**dary detection algorithm
 
