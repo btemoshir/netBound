@@ -1,5 +1,4 @@
-![Execution testing]
-(https://github.com/btemoshir/netBound/actions/workflows/test.yml/badge.svg?event=push)
+![execution testing](https://github.com/btemoshir/netBound/actions/workflows/test.yml/badge.svg?event=push)
 
 # **Net**work **boun**dary detection algorithm
 
