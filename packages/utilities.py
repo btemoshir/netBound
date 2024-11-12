@@ -415,7 +415,7 @@ def auc_roc(beta,beta_error,num_threshold,num_bdry=1,method='total',plot=False,t
             plt.plot(np.mean(fp/(fp+tn),0),np.mean(fp/(fp+tn),0),'r--')
 
         for i in range(Num_reps):
-            auc[i] = np.trap(y=tp[i]/(tp[i]+fn[i]),x=fp[i]/(fp[i]+tn[i]))
+            auc[i] = np.trapz(y=tp[i]/(tp[i]+fn[i]),x=fp[i]/(fp[i]+tn[i]))
 
         return np.mean(auc)
     
