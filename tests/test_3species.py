@@ -5,13 +5,13 @@ from scipy.integrate import odeint
 import sys
 import os
 from sklearn import linear_model
-import utilities
 import networkx as nx
 import sdeint
 import matplotlib as mpl
 
 sys.path.append('../packages/')
 sys.path.append('packages/')
+import utilities
 from utilities import *
 plt.rcParams.update({'font.size': 16,'font.family':'arial'})
 from matplotlib import colors
