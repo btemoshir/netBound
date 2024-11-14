@@ -6,23 +6,21 @@ import matplotlib.font_manager as fm
 
 from matplotlib import font_manager
 
-#font_dirs = ['C:\\Users\\thanatos\\Documents\\Fonts\\computer-modern']
-#font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+from pathlib import PurePath, Path
+import numpy as np
+import sys
 
-#for font_file in font_files:
-#    font_manager.fontManager.addfont(font_file)
+MAIN_PATH = PurePath(Path().cwd())
 
-#style_path = (MAIN_PATH / 'scripts' / 'config' / 'BA_mplrc').as_posix()
-
-style_path = (MAIN_PATH / 'memoryFunctions' / 'config' / 'BA_mplrc').as_posix()
+style_path = (MAIN_PATH / 'config' / 'BA_mplrc2').as_posix()
 
 mpl.style.use(style_path)
 
 # Edit the font, font size, and axes width
-FONT_FAMILY = 'CMU Serif'
+#FONT_FAMILY = 'CMU Serif'
 FONT_SIZE= 18
 
-mpl.rcParams['font.family'] = FONT_FAMILY
+#mpl.rcParams['font.family'] = FONT_FAMILY
 mpl.rcParams['font.size'] = FONT_SIZE
 
 
@@ -66,43 +64,4 @@ s_new = 'NEW'
 # It's also possible to use the reduced notation by directly setting font.family:
 
 COLORS = cm.get_cmap('tab10', 10)
-print('Loading plot config', COLORS)
-
-
-def calc_axis(N, space_ratio):
-
-    if not isinstance(N, tuple): 
-        ax_arr_list = []
-        dx =  (1 - space_ratio) / N
-        dw = space_ratio/(N-1)
-
-        x = 0 
-        for _ in range(N): 
-
-            ax_arr_list.append([x, 0, dx, 1])
-            x += dx + 2*dw
-    
-        return  ax_arr_list
-
-    else : 
-        Nw, Nh = N
-        srw, srh = space_ratio
-        ax_arr_list = []
-
-        dx = (1 - srw) / Nw
-        dw = srw / (Nw - 1)
-
-        dy = (1 - srh) / Nh
-        dh = srh / (Nh - 1)
-        
-        x = 0 
-        y = 1 - dy - dh 
-
-        for h in range(Nh): 
-            for w in range(Nw): 
-                ax_arr_list.append([x, y, dx, dy])
-                x += dx + 2*dw
-            y -= dy + 2*dh 
-            x = 0 
-        
-        return ax_arr_list
+print('Loading plot config 2', COLORS)

@@ -1,0 +1,5 @@
+type,educt,product1,ratef,rateb
+u,R2,RP,1,0.01
+u,RPL,RPLP,1,0.05
+u,RSh,RShP,6,0.06
+u,PLCgP,PLCgPI,1,0.03

@@ -1,0 +1,2 @@
+type,educt1,educt2,product1,ratef,rateb
+h,Ra,Ra,R2,0.01,0.1

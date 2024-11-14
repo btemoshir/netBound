@@ -1,0 +1,4 @@
+type,subs,product1,Vmax,Km
+mm,RP,R2,450,50
+mm,PLCgP,PLCg,1,100
+mm,ShP,Shc,1.7,340
