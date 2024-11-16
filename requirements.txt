@@ -5,3 +5,6 @@ matplotlib
 networkx
 sdeint
 scikit-learn
+pandas
+scikit-image
+tqdm

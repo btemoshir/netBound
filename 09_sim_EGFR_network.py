@@ -45,13 +45,14 @@ n_sub = len(par['units_subnw'])
 
 def func(): 
     # Generating Data 
-    init_list = [[y_val * ( 1 +  np.random.normal(0, stdv, len(y_val))) for i in range(n_runs)] for _ in range(n_avg)]
+    init_list = [[np.abs(y_val * ( 1 +  np.random.normal(0, stdv, len(y_val)))) for i in range(n_runs)] for _ in range(n_avg)]
 
 
 
     alpha_list = np.empty((n_epsilon, n_dt, n_avg, n_sub ))
     beta_list  = np.empty((n_epsilon, n_dt, n_avg, n_sub ))
     weights_list = np.empty((n_epsilon, n_dt, n_avg, n_sub ), dtype=object)
+    S_list = np.empty((n_epsilon, n_dt, n_avg, n_sub ), dtype=object)
     alpha_error_list = np.empty((n_epsilon, n_dt, n_avg, n_sub ))
     beta_error_list = np.empty((n_epsilon, n_dt, n_avg, n_sub ))
     emp_var_list = np.empty((n_epsilon, n_dt, n_avg, n_sub))
@@ -119,10 +120,11 @@ def func():
                     alpha_list[i_e, i_dt,  i_a, i] = clf.lambda_
                     beta_list[i_e,i_dt,  i_a, i] = clf.alpha_
                     weights_list[i_e,i_dt, i_a, i] = clf.coef_
+                    S_list[i_e, i_dt, i_a, i] = clf.sigma_
 
                                 
                     
-    t1_data = {'alpha_list': alpha_list, 'beta_list': beta_list, 'weights_list': weights_list, 'alpha_error_list': alpha_error_list, 'beta_error_list': beta_error_list, 'emp_var_list': emp_var_list, 'epsilon_list': epsilon_list, 'dt_list': dt_list, 'n_runs': n_runs, 'n_avg': n_avg, 'T': T, 'stdv': stdv}
+    t1_data = {'alpha_list': alpha_list, 'beta_list': beta_list, 'weights_list': weights_list, 'S_list': S_list, 'alpha_error_list': alpha_error_list, 'beta_error_list': beta_error_list, 'emp_var_list': emp_var_list, 'epsilon_list': epsilon_list, 'dt_list': dt_list, 'n_runs': n_runs, 'n_avg': n_avg, 'T': T, 'stdv': stdv}
 
     np.save('data/09_EGFR_MM_stoch', t1_data)
 
