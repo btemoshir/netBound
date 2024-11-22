@@ -1014,6 +1014,51 @@ def get_true_weights(active_units, dynb, dynh, dynu, dynm, units):
     basis_funcs_sym = design_matrix_symbolic(active_units_sp[np.newaxis], symbolic=True)[0]
     return weights, basis_funcs_sym
 
+def design_matrix_2(X, get_num_basis=False, params=None, symbolic=False):
+    
+    """
+    Outputs all the basis functions at one time point which are linear and quadratic combinations.
+    
+    Input:
+    X = array with all species concentrations at several time points.
+    
+    Output:
+    basis_func = the basis_funcs. dim: num_species*(num_species+3)/2 + 1 
+    
+    """
+    
+    if params is not None: 
+        n_subnw = params['num_subnw'] 
+        n_basis_func = int(n_subnw * (n_subnw + 3) / 2 + 1)
+        if get_num_basis: 
+            return n_basis_func
+        if X.shape[1] != n_subnw: 
+            X = X[:, params['idx_subnw']]
+
+    
+    # print('X: ', X, 'X.shape', X.shape)
+    n_samples, n_subnetwork = X.shape
+    n_basis_func = int(n_subnetwork * (n_subnetwork + 3) / 2 + 1)
+    
+    if symbolic: 
+        _dtype = object
+    else: 
+        _dtype = np.float64
+    
+    d1 = np.zeros(shape=(n_samples, n_basis_func), dtype=_dtype)
+    
+
+    temp = np.concatenate([[X[:, unit] * X[:, unit:][:, i] for i in range(n_subnetwork - unit)] for unit in
+            range(n_subnetwork)]).T
+    
+
+    d1[:, :len(temp[0])] = temp[:, :]
+    d1[:,  len(temp[0]): -1] = X[:, :]
+    d1[:, -1] = 1
+
+    # print('design matr: \tsamples: ', d1.shape[0], ' basis_funcs: ', d1.shape[1])
+    return d1
+
 
 def design_matrix_symbolic(X, get_num_basis=False, params=None, symbolic=False):
     
