@@ -7,8 +7,19 @@
 This repository contains the implemetation for the paper:
 
 ```
-Insert paper bib and url.
-
+@article{harsh_physics-inspired_2024,
+	title = {Physics-inspired machine learning detects “unknown unknowns” in networks: discovering network boundaries from observable dynamics},
+	copyright = {https://creativecommons.org/licenses/by/4.0/},
+	issn = {2632-2153},
+	shorttitle = {Physics-inspired machine learning detects “unknown unknowns” in networks},
+	url = {https://iopscience.iop.org/article/10.1088/2632-2153/ad9194},
+	doi = {10.1088/2632-2153/ad9194},
+	urldate = {2024-11-22},
+	journal = {Machine Learning: Science and Technology},
+	author = {Harsh, Moshir and Vulpius, Leonhard Götz and Sollich, Peter},
+	month = nov,
+	year = {2024},
+}
 ```
 
 The task tackled in this repository is pictorially described as: 
