@@ -21,13 +21,13 @@ M_DYNM_PATH= path_dir_script + '/parameters/EGFR/mdyn.txt'
 
 
 
-n_epsilon = 5
-epsilon_list = np.logspace(-8, -2, base=8, num=n_epsilon)
-dt_list = [5e-3, 5e-2]
-n_runs = 40
+n_epsilon = 8
+epsilon_list = np.logspace(-8, -2, base=10, num=n_epsilon)
+dt_list = [5e-3, 1e-2, 3e-2, 6e-2]
+n_runs = 300
 n_avg = 3
 T = 10
-stdv = .2
+stdv = .3
 
 n_dt = len(dt_list)
 t_eval = [np.linspace(0, T, int(np.ceil(T / dt))) for dt in dt_list]
@@ -45,8 +45,8 @@ n_sub = len(par['units_subnw'])
 
 def func(): 
     # Generating Data 
+    np.random.seed(0)
     init_list = [[np.abs(y_val * ( 1 +  np.random.normal(0, stdv, len(y_val)))) for i in range(n_runs)] for _ in range(n_avg)]
-
 
 
     alpha_list = np.empty((n_epsilon, n_dt, n_avg, n_sub ))
@@ -65,12 +65,12 @@ def func():
         stoch_dyn = get_stoch_term(epsilon, S, flux)
         
 
-        for i_a in range(n_avg):        
+        bar_a = tqdm(range(n_avg), total=n_avg, leave=False)
+        for i_a in bar_a:        
             
             d1 = [None]*n_dt
             der = [None]*n_dt
             der_det = [None]*n_dt
-
 
 
             bar_runs = tqdm(range(n_runs), total=n_runs, leave=False)
@@ -89,30 +89,31 @@ def func():
                     x_d = x_det[:, ::int(np.ceil(dt_list[i_dt] / dt_list[0]))]
 
                     if (d1[i_dt] is not None): 
-                        d1[i_dt] = np.append(d1[i_dt], design_matrix(x_s.T), axis=0)
+                        d1[i_dt] = np.append(d1[i_dt], design_matrix_2(x_s.T), axis=0)
                         der[i_dt] = np.append(der[i_dt], np.gradient(x_s,t_eval[i_dt],  axis=1), axis=1)                                        
                         der_det[i_dt] = np.append(der_det[i_dt], np.gradient(x_d, t_eval[i_dt],  axis=1), axis=1)                    
                                             
                                         
                     else:     
-                        d1[i_dt] = design_matrix(x_s.T)
+                        d1[i_dt] = design_matrix_2(x_s.T)
                         der[i_dt] = np.gradient(x_s,t_eval[i_dt],  axis=1)    
                         der_det[i_dt] = np.gradient(x_d,t_eval[i_dt],  axis=1)  
                     
             for i_dt in range(n_dt):
                 
-                emp_var_list[i_e, i_dt, i_a] = np.var(der[i_dt] - der_det[i_dt], axis=1) 
+                emp_var_list[i_e, i_dt, i_a] = np.var(der[i_dt] - der_det[i_dt], axis=1)         
 
-            
-            for i_dt in range(n_dt):
-                for i in range(len(par['units_subnw'])): 
+            bar_dt = tqdm(range(n_dt), total=n_dt, leave=False)
+            for i_dt in bar_dt:
+                bar_units = tqdm(range(len(par['units_subnw'])), total=len(par['units_subnw']), leave=False)  
+                for i in bar_units: 
                     clf = BayesianRidge(lambda_1=0, lambda_2=0, alpha_1=0, alpha_2=0, copy_X = True, tol=1e-4, fit_intercept=False)
                     clf.fit(d1[i_dt], der[i_dt][i])
 
                     alpha = clf.lambda_
                     beta = clf.alpha_            
 
-                    temp = second_der_alpha_beta_2(alpha, beta, d1[i_dt], der[i_dt][i])
+                    temp = second_der_alpha_beta_2(alpha, beta, d1[i_dt], der[i_dt][i])*len(der[i_dt][i])
 
                     alpha_error_list[i_e, i_dt, i_a, i] = np.abs(temp[1]/(temp[0]*temp[1]-temp[2]**2))**0.5
                     beta_error_list[i_e,i_dt, i_a, i]  = np.abs(temp[0]/(temp[0]*temp[1]-temp[2]**2))**0.5                
